@@ -1,0 +1,7 @@
+dist
+elm-stuff
+node_modules
+db.json
+config.js
+.DS_Store
+elm.js
