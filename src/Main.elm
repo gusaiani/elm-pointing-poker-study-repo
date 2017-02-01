@@ -5,7 +5,7 @@ import Messages exposing (Msg(..))
 import Models exposing (Model, initModel)
 import View exposing (view)
 import Update exposing (update)
-import Json.Encode exposing Encode
+import Json.Encode as Encode
 import Platform.Sub
 
 
@@ -22,4 +22,25 @@ init flags =
         newLogin =
             { login | roomName = flags.room }
     in
-        ( { initModel | login = newLogin }, Cmd.none )        
+        ( { initModel | login = newLogin }, Cmd.none )
+
+
+port receiveRoomData : (Encode.Value -> msg) -> Sub msg
+
+
+port receiveIsNameAvailable : (Encode.Value -> msg) -> Sub msg
+
+
+main =
+    Html.programWithFlags
+        { init = init
+        , view = view
+        , update = update
+        , subscriptions =
+            (\model ->
+                Platform.Sub.batch
+                    [ receiveRoomData ReceiveFBRoomData
+                    , receiveIsNameAvailable ReceiveFBIsNameAvailable
+                    ]
+            )
+        }
