@@ -12,23 +12,23 @@ import Room.Models exposing (Room)
 view : Room -> Html Msg
 view room =
     div [ class "columns column is-10 is-offset-1" ]
-    [ div [ class "column" ]
-        [ renderQuestionSection room.question
-        , renderVoteSection
+        [ div [ class "column" ]
+            [ renderQuestionSection room.question
+            , renderVoteSection
+            ]
+        , div [ class "column is-5" ]
+            [ renderUsersSection room.items
+            ]
         ]
-    , div [ class "column is-5" ]
-        [ renderUsersSection room.items
-        ]
-    ]
 
 
 renderQuestionSection : String -> Html Msg
 renderQuestionSection question =
     div [ class "control is-grouped" ]
         [ p [ class "control is-expanded" ]
-            [ label [ class "label" ] [text "Question" ]
+            [ label [ class "label" ] [ text "Question" ]
             , input
-                [ class "input" ]
+                [ class "input"
                 , placeholder "Enter task description"
                 , onInput EditQuestion
                 , value question
@@ -66,7 +66,7 @@ renderVoteSection =
             List.map renderButton items
     in
         div []
-            [ label [ class "label" ] [ text "Your vote" ]
+            [ label [ class "label" ] [ text "Your Vote" ]
             , Keyed.node "div" [ class "control is-grouped" ] (buttons)
             ]
 
@@ -82,11 +82,11 @@ renderUsersSection items =
         totalVotes =
             items
                 |> Dict.toList
-                |> List.map (\( name, vote  ) -> vote)
+                |> List.map (\( name, vote ) -> vote)
                 |> List.sum
 
         numOfVotes =
-            item
+            items
                 |> Dict.toList
                 |> List.filter (\( name, vote ) -> vote >= 0)
                 |> List.length
@@ -120,4 +120,3 @@ renderUser ( name, vote ) =
             [ Html.b [] [ text (toString vote) ] ]
         ]
     )
-
