@@ -9,4 +9,16 @@ update : Msg -> Room -> String -> ( Room, Cmd Msg )
 update msg room userName =
     case msg of
         RoomUpdate newRoom ->
+            ( newRoom, Cmd.none )
 
+        EditQuestion newQuestion ->
+            ( { room | question = newQuestion }, fbEditQuestion newQuestion )
+
+        Vote vote ->
+            ( room
+            , fbVote
+                ({ userName = userName
+                 , vote = vote
+                 }
+                )
+            )
